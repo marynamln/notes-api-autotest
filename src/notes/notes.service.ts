@@ -39,6 +39,9 @@ export class NotesService {
 
     async delete(id: string): Promise<{ success: boolean }> {
         const result = await this.noteRepo.delete(id);
-        return { success: Boolean(result.affected) };
-    }
+        if (result.affected === 0) {
+            throw new NotFoundException('Note not found');
+        }
+        return { success: true };
+    }    
 }
